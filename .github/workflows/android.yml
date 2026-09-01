@@ -95,10 +95,43 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+      # Los artefactos de Actions no se pueden descargar desde el navegador de un
+      # móvil: GitHub no expone el enlace en el layout de celular. Un Release sí es
+      # un enlace normal, así que se publica uno reutilizando siempre el mismo tag
+      # `apk-latest`. Eso da una URL de descarga fija que apunta al último build,
+      # sin acumular releases en cada push.
+      - name: Renombrar el APK para la descarga
+        run: |
+          mkdir -p release-files
+          cp android/app/build/outputs/apk/debug/app-debug.apk \
+             release-files/nexus-p2p-ledger.apk
+          if compgen -G "android/app/build/outputs/apk/release/*.apk" > /dev/null; then
+            cp android/app/build/outputs/apk/release/*.apk \
+               release-files/nexus-p2p-ledger-release.apk
+          fi
+
+      - name: Publicar el APK más reciente como Release
+        if: startsWith(github.ref, 'refs/heads/')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-latest
+          target_commitish: ${{ github.sha }}
+          name: APK más reciente (build automático)
+          body: |
+            APK compilado automáticamente desde `${{ github.ref_name }}`
+            (commit ${{ github.sha }}).
+
+            Descarga **nexus-p2p-ledger.apk** aquí abajo y ábrelo en el teléfono.
+            Android pedirá permitir "instalar apps de orígenes desconocidos".
+
+            Va firmado con la clave de depuración de Android: sirve para instalarlo
+            tú mismo, no para publicarlo en Play Store.
+          prerelease: true
+          make_latest: false
+          files: release-files/*.apk
+
       - name: Adjuntar APKs a la Release (solo en tags v*)
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            android/app/build/outputs/apk/debug/*.apk
-            android/app/build/outputs/apk/release/*.apk
+          files: release-files/*.apk
