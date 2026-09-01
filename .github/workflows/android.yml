@@ -4,11 +4,18 @@ on:
   push:
     branches: ["**"]
     tags: ["v*"]
-  pull_request:
   workflow_dispatch:
 
+# Sin disparador `pull_request`: con un PR abierto, cada push generaba dos
+# ejecuciones idénticas (una por `push` y otra por `pull_request`). El
+# disparador `push` ya cubre las ramas con y sin PR.
 permissions:
   contents: write
+
+# Si llegan varios pushes seguidos, cancela los builds que quedaron obsoletos.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
