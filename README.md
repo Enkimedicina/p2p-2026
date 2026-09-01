@@ -49,18 +49,23 @@ npm run preview     # sirve el build de producción
 El proyecto nativo vive en `android/` (Capacitor 6, `minSdk 22` = Android 5.1+).
 La web va empaquetada dentro del APK, así que la app funciona por completo sin conexión.
 
-### Opción A — compilar en GitHub Actions (sin instalar nada)
+### Opción A — descargar el APK ya compilado
 
-El workflow `.github/workflows/android.yml` compila el APK en cada push.
+Cada push reconstruye el APK y actualiza este enlace, que siempre apunta al build
+más reciente:
 
-1. Ve a la pestaña **Actions** del repositorio.
-2. Abre la ejecución más reciente de *Build Android APK*.
-3. Descarga el artefacto **`nexus-p2p-apk`**.
-4. Pasa el `.apk` al teléfono y ábrelo (hay que permitir "instalar apps de orígenes
-   desconocidos" para la app desde la que lo abras).
+**https://github.com/Enkimedicina/p2p-2026/releases/download/apk-latest/nexus-p2p-ledger.apk**
 
-El APK de depuración va firmado con la clave de debug de Android: sirve para instalarlo
-tú mismo, pero **no** para publicarlo en Play Store.
+Ábrelo directamente desde el teléfono. Android pedirá permitir "instalar apps de
+orígenes desconocidos" para la app desde la que lo abras.
+
+> Se publica como Release y no solo como artefacto de Actions porque **los artefactos
+> no se pueden descargar desde el navegador de un móvil**: GitHub no expone el enlace
+> en el layout de celular. El artefacto `nexus-p2p-apk` sigue disponible en cada
+> ejecución para quien descargue desde una computadora.
+
+El APK va firmado con la clave de debug de Android: sirve para instalarlo tú mismo,
+pero **no** para publicarlo en Play Store.
 
 ### Opción B — compilar en tu máquina
 
