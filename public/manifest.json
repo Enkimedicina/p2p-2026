@@ -1,0 +1,14 @@
+{
+  "short_name": "Nexus P2P",
+  "name": "Nexus P2P Ledger",
+  "icons": [
+    { "src": "./icons/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "./icons/icon-512.png", "type": "image/png", "sizes": "512x512" },
+    { "src": "./icons/icon-maskable-512.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#020617",
+  "background_color": "#020617",
+  "orientation": "portrait"
+}
