@@ -5,8 +5,8 @@ const config: CapacitorConfig = {
   appName: 'Nexus P2P Ledger',
   webDir: 'dist',
   android: {
-    // El contenido se sirve empaquetado dentro del APK: la app abre sin red.
-    // Solo el módulo de IA (Gemini) necesita conexión.
+    // Todo el contenido va empaquetado dentro del APK y los datos se guardan
+    // en el dispositivo: la app funciona por completo sin conexión.
     allowMixedContent: false,
   },
   plugins: {

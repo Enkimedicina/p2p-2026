@@ -36,8 +36,6 @@ jobs:
         run: npm run typecheck
 
       - name: Compilar la web e inyectar en el proyecto Android
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           npm run build
           npx cap sync android

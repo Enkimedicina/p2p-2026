@@ -9,7 +9,6 @@ import { Transaction, TransactionType, PortfolioStats } from './types.ts';
 import { StatsCards } from './components/StatsCards.tsx';
 import { TransactionForm } from './components/TransactionForm.tsx';
 import { HistoryTable } from './components/HistoryTable.tsx';
-import { AiInsight } from './components/AiInsight.tsx';
 import { SimulationModal } from './components/SimulationModal.tsx';
 import { AdjustmentModal } from './components/AdjustmentModal.tsx';
 import { MonthlyLimitTracker } from './components/MonthlyLimitTracker.tsx';
@@ -214,8 +213,6 @@ function App() {
           />
         </div>
       </main>
-
-      <AiInsight transactions={filteredTransactions} portfolioName={PORTFOLIOS.find(p => p.id === activePortfolio)?.label || 'Principal'} />
 
       {isTransactionModalOpen && (
         <div className="fixed inset-0 bg-gray-950/80 backdrop-blur-md z-[100] flex items-center justify-center p-4">

@@ -1,10 +1,13 @@
-# Nexus P2P Ledger Pro
+# Nexus P2P Ledger
 
-Portal de gestión, análisis y auditoría de inversiones P2P en **USDT/MXN**, con módulo de
-análisis por IA (Google Gemini).
+Gestión, análisis y auditoría de inversiones P2P en **USDT/MXN**.
 
-Originalmente creado en Google AI Studio; este repositorio lo convierte en un proyecto
-compilable con **Vite + React 19 + TypeScript**, empaquetable como **app Android** vía Capacitor.
+Aplicación **100% local**: no hace ninguna petición de red, no tiene servidor, no pide
+cuenta y no depende de ninguna API. Todo se calcula y se guarda en tu propio dispositivo.
+
+Originalmente creada en Google AI Studio; este repositorio la convierte en un proyecto
+compilable con **Vite + React 19 + TypeScript**, empaquetable como **app Android** vía
+Capacitor.
 
 ## Qué incluye
 
@@ -17,17 +20,19 @@ compilable con **Vite + React 19 + TypeScript**, empaquetable como **app Android
 | Escenarios de rentabilidad | `components/ProfitScenarioCard.tsx` |
 | Simulador de operaciones | `components/SimulationModal.tsx` |
 | Ajustes manuales de saldo | `components/AdjustmentModal.tsx` |
-| Análisis con IA (Gemini) | `components/AiInsight.tsx`, `services/geminiService.ts` |
 
-Los datos se guardan en el `localStorage` del dispositivo — no hay servidor ni cuenta.
-En Android el `localStorage` del WebView persiste entre sesiones, pero **se borra si
-desinstalas la app o limpias sus datos**. No hay respaldo automático.
+## Sobre tus datos
+
+Se guardan en el `localStorage` del dispositivo. Nada sale del teléfono.
+
+⚠️ **No hay respaldo automático.** Los datos se borran si desinstalas la app o limpias
+sus datos desde los ajustes de Android. Si vas a llevar registro de dinero real,
+conviene añadir una función de exportar/importar a archivo.
 
 ## Desarrollo
 
 ```bash
 npm install
-cp .env.example .env     # opcional: pon tu GEMINI_API_KEY
 npm run dev              # http://localhost:5173
 ```
 
@@ -42,8 +47,7 @@ npm run preview     # sirve el build de producción
 ## App Android
 
 El proyecto nativo vive en `android/` (Capacitor 6, `minSdk 22` = Android 5.1+).
-La web se empaqueta dentro del APK, así que la app **abre sin conexión**; solo el
-módulo de IA necesita internet.
+La web va empaquetada dentro del APK, así que la app funciona por completo sin conexión.
 
 ### Opción A — compilar en GitHub Actions (sin instalar nada)
 
@@ -98,24 +102,15 @@ También se despliega como web estática. `vercel.json` ya incluye el rewrite de
 npm run build   # sube dist/ a Vercel, Netlify, Cloudflare Pages, etc.
 ```
 
-## Clave de Gemini
-
-El análisis con IA usa `GEMINI_API_KEY`, que se inyecta **en tiempo de build**
-(`vite.config.ts`). Sin ella la app funciona con normalidad y solo el panel de IA queda
-desactivado.
-
-> **Aviso de seguridad:** una clave inyectada en el bundle queda visible para cualquiera
-> que inspeccione la web o descompile el APK. Restringe la clave en Google Cloud, o
-> muévela detrás de un backend propio si la app va a ser pública.
-
 ## Estructura
 
 ```
 App.tsx                  # estado global, portafolios, persistencia
 index.tsx / index.html   # punto de entrada
-index.css                # Tailwind + ajustes de WebView móvil
+index.css                # tipografía auto-alojada + Tailwind + ajustes de WebView
 types.ts                 # modelo de datos (Transaction, PortfolioStats…)
 components/              # UI
-services/geminiService.ts# integración con Gemini
+fonts/                   # Inter (fuente variable, auto-alojada)
+public/                  # manifiesto PWA e iconos, copiados tal cual
 android/                 # proyecto nativo de Capacitor
 ```
